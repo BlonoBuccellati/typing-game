@@ -1,7 +1,8 @@
+// TODO:ロジックをさらに関数に分離する。(リファクタ)
+
 import { useState } from 'react';
 
 import useCountDown from '@/hooks/counter';
-
 // タイピングロジックを管理するカスタムフック
 export const useTypingGame = (duration: number) => {
   const { seconds: remainingTime, isCounting } = useCountDown(duration);

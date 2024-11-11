@@ -3,6 +3,8 @@ import { Input } from '@/components/ui/input';
 import Timer from './timer';
 import Finish from './finish';
 import { useTypingGame } from '@/hooks/typing-game';
+import InputDisplay from './input-display';
+import GameStatus from './game-status';
 
 // ゲーム時間
 const GAME_DURATION = 10; //後でグローバルにするかも
@@ -21,16 +23,11 @@ const TypingGame = () => {
 
   const renderGameContent = () => {
     if (isGameCompleted) {
-      return <div>ゲームクリア！</div>;
+      return <GameStatus message='ゲームクリア！' />;
     }
     return (
       <>
-        <p>
-          <span className='text-green-400 font-bold'>
-            {currentQuestion.slice(0, charIndex)}
-          </span>
-          <span>{currentQuestion.slice(charIndex)}</span>
-        </p>
+        <InputDisplay currentQuestion={currentQuestion} charIndex={charIndex} />
         <Input
           onChange={handleInputChange}
           placeholder={currentQuestion}
