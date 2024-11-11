@@ -6,43 +6,44 @@ import { Input } from '@/components/ui/input';
 import Timer from './timer';
 import Finish from './finish';
 
+// ゲーム時間
+const GAME_DURATION = 10; //後でグローバルにするかも
+
 // フェッチしたデータはTypingGameの引数にとる？
 const TypingGame = () => {
-  // ゲーム時間
-  const gameDuration = 10;
-  const { seconds, isCounting } = useCountDown(gameDuration);
-
+  const { seconds: remainingTime, isCounting } = useCountDown(GAME_DURATION);
   // タイピング
   // TODO:DBからフェッチしたデータに修正
   const typingData = ['hello', 'world', 'React', 'Typing', 'game'];
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [currentCharIndex, setCurrentCharIndex] = useState(0);
-  const [inputValue, setInputValue] = useState('');
-  const [isAllCompleted, setIsAllCompleted] = useState(false);
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [inputText, setInputText] = useState('');
+  const [isGameCompleted, setIsGameCompleted] = useState(false);
 
   //現在の問題文
-  const currentQuestion = typingData[currentQuestionIndex];
+  const currentQuestion = typingData[questionIndex];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     const inputChar = newValue[newValue.length - 1];
-    const currentChar = currentQuestion[currentCharIndex];
+    const currentChar = currentQuestion[charIndex];
 
-    const isMatchInputChar = inputChar === currentChar;
-    if (isMatchInputChar) {
+    const isCorrectInputChar = inputChar === currentChar;
+    if (isCorrectInputChar) {
       // 入力が一致しているときの処理
-      setCurrentCharIndex((prev) => ++prev);
-      setInputValue(newValue);
-      const isLastIndex = currentCharIndex === currentQuestion.length - 1;
-      if (isLastIndex) {
-        const maxTypingDataIndex = typingData.length - 1;
-        const hasNextData: boolean = currentQuestionIndex < maxTypingDataIndex;
-        if (hasNextData) {
-          setCurrentQuestionIndex((prev) => ++prev);
-          setCurrentCharIndex(0);
-          setInputValue('');
+      setCharIndex((prev) => ++prev);
+      setInputText(newValue);
+
+      const isEndOfCurrentQuestion = charIndex === currentQuestion.length - 1;
+      const isLastQuestion = questionIndex === typingData.length - 1;
+
+      if (isEndOfCurrentQuestion) {
+        if (isLastQuestion) {
+          setIsGameCompleted(true);
         } else {
-          setIsAllCompleted(true);
+          setQuestionIndex((prev) => ++prev);
+          setCharIndex(0);
+          setInputText('');
         }
       }
     } else {
@@ -50,33 +51,36 @@ const TypingGame = () => {
     }
   };
 
+  const renderGameContent = () => {
+    if (isGameCompleted) {
+      return <div>ゲームクリア！</div>;
+    }
+    return (
+      <>
+        <p>
+          <span className='text-green-400 font-bold'>
+            {currentQuestion.slice(0, charIndex)}
+          </span>
+          <span>{currentQuestion.slice(charIndex)}</span>
+        </p>
+        <Input
+          onChange={handleInputChange}
+          placeholder={currentQuestion}
+          value={inputText}
+        />
+      </>
+    );
+  };
+
   return (
     <>
       {/** TODO:オーバーレイするように実装 */}
-      {isCounting === false && <Finish />}
+      {!isCounting && <Finish />}
       {/**メイン画面 */}
       <div>
-        タイピングゲーム
-        <Timer remainingGameTime={seconds} />
-        <div>
-          {isAllCompleted ? (
-            <div>Congratulation! You've completed the typing game!</div>
-          ) : (
-            <>
-              <p>
-                <span className='text-green-400 font-bold'>
-                  {currentQuestion.slice(0, currentCharIndex)}
-                </span>
-                <span>{currentQuestion.slice(currentCharIndex)}</span>
-              </p>
-              <Input
-                onChange={handleInputChange}
-                placeholder={currentQuestion}
-                value={inputValue}
-              />
-            </>
-          )}
-        </div>
+        <h2>タイピングゲーム</h2>
+        <Timer remainingGameTime={remainingTime} />
+        <div>{renderGameContent()}</div>
       </div>
     </>
   );
