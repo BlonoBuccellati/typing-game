@@ -1,52 +1,32 @@
-// TODO: データをここで全て用意する。localStateでフェッチしたデータを管理。
 import { Input } from '@/components/ui/input';
-import Timer from './timer';
-import Finish from './finish';
-import { useTypingGame } from '@/hooks/typing-game';
 import InputDisplay from './input-display';
 import GameStatus from './game-status';
 
-// ゲーム時間
-const GAME_DURATION = 10; //後でグローバルにするかも
-
-// フェッチしたデータはTypingGameの引数にとる？
-const TypingGame = () => {
-  const {
-    currentQuestion,
-    charIndex,
-    inputText,
-    isGameCompleted,
-    isCounting,
-    remainingTime,
-    handleInputChange,
-  } = useTypingGame(GAME_DURATION);
-
-  const renderGameContent = () => {
-    if (isGameCompleted) {
-      return <GameStatus message='ゲームクリア！' />;
-    }
-    return (
-      <>
-        <InputDisplay currentQuestion={currentQuestion} charIndex={charIndex} />
-        <Input
-          onChange={handleInputChange}
-          placeholder={currentQuestion}
-          value={inputText}
-        />
-      </>
-    );
-  };
-
+interface TypingGame {
+  currentQuestion: string;
+  charIndex: number;
+  inputText: string;
+  isGameCompleted: boolean;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+const TypingGame = ({
+  currentQuestion,
+  charIndex,
+  inputText,
+  isGameCompleted,
+  handleInputChange,
+}: TypingGame) => {
+  if (isGameCompleted) {
+    return <GameStatus message='ゲームクリア！' />;
+  }
   return (
     <>
-      {/** TODO:オーバーレイするように実装 */}
-      {!isCounting && <Finish />}
-      {/**メイン画面 */}
-      <div>
-        <h2>タイピングゲーム</h2>
-        <Timer remainingGameTime={remainingTime} />
-        <div>{renderGameContent()}</div>
-      </div>
+      <InputDisplay currentQuestion={currentQuestion} charIndex={charIndex} />
+      <Input
+        onChange={handleInputChange}
+        placeholder={currentQuestion}
+        value={inputText}
+      />
     </>
   );
 };
