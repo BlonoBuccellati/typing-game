@@ -1,10 +1,10 @@
 // ロジックを持つコンテナコンポーネント
 // TODO: データをここで全て用意する。localStateでフェッチしたデータを管理。
 import Timer from './timer';
-import Finish from './finish';
 import TypingGame from './typing-game';
 
-import { useTypingGame } from '@/hooks/typing-game';
+import { useTypingGame } from '@/hooks/use-typing-game';
+import GameStatus from './game-status';
 
 // ゲーム時間
 const GAME_DURATION = 10; //後でグローバルにするかも
@@ -14,17 +14,26 @@ const TypingGameContainer = () => {
   const {
     currentQuestion,
     charIndex,
-    inputText,
     isGameCompleted,
-    isCounting,
+    isPlaying,
     remainingTime,
-    handleInputChange,
   } = useTypingGame(GAME_DURATION);
 
   return (
     <>
+      {'currentQuestion:' + currentQuestion}
+      <br />
+      {'charIndex:' + charIndex}
+      <br />
+      {'isGameCompleted:' + isGameCompleted}
+      <br />
+      {'isPlaying:' + isPlaying}
+      <br />
+      {'remainingTime:' + remainingTime}
+      <br />
       {/** TODO:オーバーレイするように実装 */}
-      {!isCounting && <Finish />}
+      {!isPlaying && <GameStatus message='終了！' />}
+      <br />
       {/**メイン画面 */}
       <div>
         <h2>タイピングゲーム</h2>
@@ -32,9 +41,7 @@ const TypingGameContainer = () => {
         <TypingGame
           currentQuestion={currentQuestion}
           charIndex={charIndex}
-          inputText={inputText}
           isGameCompleted={isGameCompleted}
-          handleInputChange={handleInputChange}
         />
       </div>
     </>
