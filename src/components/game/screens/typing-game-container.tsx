@@ -21,16 +21,6 @@ const TypingGameContainer = () => {
 
   return (
     <>
-      {'currentQuestion:' + currentQuestion}
-      <br />
-      {'charIndex:' + charIndex}
-      <br />
-      {'isGameCompleted:' + isGameCompleted}
-      <br />
-      {'isPlaying:' + isPlaying}
-      <br />
-      {'remainingTime:' + remainingTime}
-      <br />
       {/** TODO:オーバーレイするように実装 */}
       {!isPlaying && <GameStatus message='終了！' />}
       <br />

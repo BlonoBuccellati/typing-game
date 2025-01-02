@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import useCountDown from '@/hooks/counter';
 import { useHandleKeyPress } from './use-handle-keypress';
 import { useTypingData } from './use-typing-data';
+//import { useTypingData } from './use-typing-data';
 // タイピングロジックを管理するカスタムフック
 export const useTypingGame = (duration: number) => {
   const { seconds: remainingTime, isCounting: isPlaying } =
@@ -14,14 +15,17 @@ export const useTypingGame = (duration: number) => {
   const [charIndex, setCharIndex] = useState(0); // １問題の中の配列
   const [isGameCompleted, setIsGameCompleted] = useState(false); // 問題終了フラグ
   const typingData = useTypingData(); // タイピングデータ
-  const [currentQuestion, setCurrentQuestion] = useState(typingData[0]); //最初の問題をセット
+  const { data: typingDataArray } = typingData;
+  const [currentQuestion, setCurrentQuestion] = useState(
+    typingDataArray?.[0] ?? ''
+  );
   // 入力時のイベント
   const handleKeyPress = useHandleKeyPress({
     currentQuestion,
     setCurrentQuestion,
     charIndex,
     currentQuestionIndex,
-    typingData,
+    typingData: typingDataArray ?? [],
     setCharIndex,
     setCurrentQuestionIndex,
     setIsGameCompleted,

@@ -11,6 +11,20 @@ interface useHandleKeyPressProps {
   setCurrentQuestionIndex: React.Dispatch<React.SetStateAction<number>>;
   setIsGameCompleted: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+/**
+ * ゲーム中の、キー入力時のイベント
+ * @param currentQuestion 現在の問題
+ * @param {Dispatch} setCurrentQuestion 現在の問題を設定
+ * @param {number} charIndex 表示中の問題のindex
+ * @param {number} currentQuestionIndex 現在の問題のindex
+ * @param typingData 対象タイピングデータ
+ * @param setCharIndex 表示中の問題のindexの設定
+ * @param setCurrentQuestionIndex 問題のindexの設定
+ * @param setIsGameCompleted 問題が終了したかの設定
+ *
+ * @returns
+ */
 export const useHandleKeyPress = ({
   currentQuestion,
   setCurrentQuestion,
@@ -27,13 +41,14 @@ export const useHandleKeyPress = ({
       const inputChar = e.key;
       console.log(inputChar);
       const isCorrectInputChar = inputChar === currentChar;
+      // 入力が一致しているときの処理
       if (isCorrectInputChar) {
-        // 入力が一致しているときの処理
-        setCharIndex((prev) => 1 + prev);
+        setCharIndex((prev) => prev + 1);
 
+        // 問題、または問題のindexの変更またはゲーム終了
         const isEndOfCurrentQuestion = charIndex === currentQuestion.length - 1;
         const isLastQuestion = currentQuestionIndex === typingData.length - 1;
-
+        // TODO:ifのネストが嫌だ。
         if (isEndOfCurrentQuestion) {
           if (isLastQuestion) {
             setIsGameCompleted(true);
@@ -53,6 +68,7 @@ export const useHandleKeyPress = ({
       setCharIndex,
       setCurrentQuestionIndex,
       setIsGameCompleted,
+      setCurrentQuestion,
     ]
   );
 };

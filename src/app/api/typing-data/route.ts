@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 export async function POST(req: NextRequest) {
   try {
     const content = await req.json();
-    const newData = await prisma.testUser.create({
+    const newData = await prisma.testGameData.create({
       data: {
         name: content.name,
       },
@@ -15,6 +15,14 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
-  const data = await prisma.testUser.findMany();
-  return Response.json(data);
+  try {
+    const data = await prisma.testGameData.findMany({
+      select: {
+        name: true,
+      },
+    });
+    return Response.json(data);
+  } catch (error) {
+    console.log(error);
+  }
 }

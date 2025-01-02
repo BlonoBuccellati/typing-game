@@ -6,7 +6,6 @@ const GameStarter = () => {
   // ゲーム開始までのカウント
   const countToStart = 3;
   const { seconds, isCounting } = useCountDown(countToStart);
-
   return isCounting ? <CountDown count={seconds} /> : <TypingGameContainer />;
 };
 
