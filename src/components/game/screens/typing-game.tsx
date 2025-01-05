@@ -1,21 +1,15 @@
 import InputDisplay from './input-display';
-import GameStatus from './game-status';
+
 interface TypingGame {
   currentQuestion: string;
   charIndex: number;
-  isGameCompleted: boolean;
 }
-function TypingGame({
-  currentQuestion,
-  charIndex,
-  isGameCompleted,
-}: TypingGame) {
-  if (isGameCompleted) {
-    return <GameStatus message='ゲームクリア！' />;
-  }
+function TypingGame({ currentQuestion, charIndex }: TypingGame) {
   return (
     <>
-      <InputDisplay currentQuestion={currentQuestion} charIndex={charIndex} />
+      <div className='flex flex-col items-center justify-center space-y-16'>
+        <InputDisplay currentQuestion={currentQuestion} charIndex={charIndex} />
+      </div>
     </>
   );
 }

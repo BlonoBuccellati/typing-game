@@ -4,7 +4,7 @@ interface TimerProps {
 
 const Timer = ({ remainingGameTime }: TimerProps) => {
   // カウント開始！
-  return <div>残り時間:{remainingGameTime}</div>;
+  return <span className='text-2xl'>残り時間:{remainingGameTime}</span>;
 };
 
 export default Timer;

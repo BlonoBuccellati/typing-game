@@ -5,7 +5,11 @@ interface GameStatus {
   message: string;
 }
 const GameStatus = ({ message }: GameStatus) => {
-  return <div>{message}</div>;
+  return (
+    <div className='text-center w-screen'>
+      <span className='text-6xl font-black'>{message}</span>
+    </div>
+  );
 };
 
 export default GameStatus;

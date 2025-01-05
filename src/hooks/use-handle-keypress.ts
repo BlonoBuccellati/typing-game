@@ -1,3 +1,4 @@
+import useBoundStore from '@/store';
 import { useCallback } from 'react';
 
 // 入力時のイベント
@@ -9,7 +10,6 @@ interface useHandleKeyPressProps {
   typingData: string[];
   setCharIndex: React.Dispatch<React.SetStateAction<number>>;
   setCurrentQuestionIndex: React.Dispatch<React.SetStateAction<number>>;
-  setIsGameCompleted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 /**
@@ -33,8 +33,8 @@ export const useHandleKeyPress = ({
   typingData,
   setCharIndex,
   setCurrentQuestionIndex,
-  setIsGameCompleted,
 }: useHandleKeyPressProps) => {
+  const setFinish = useBoundStore((state) => state.setFinish);
   return useCallback(
     (e: KeyboardEvent) => {
       const currentChar = currentQuestion[charIndex];
@@ -51,7 +51,7 @@ export const useHandleKeyPress = ({
         // TODO:ifのネストが嫌だ。
         if (isEndOfCurrentQuestion) {
           if (isLastQuestion) {
-            setIsGameCompleted(true);
+            setFinish();
           } else {
             setCurrentQuestionIndex((prev) => prev + 1);
             setCurrentQuestion(typingData[currentQuestionIndex + 1]);
@@ -67,7 +67,7 @@ export const useHandleKeyPress = ({
       currentQuestion,
       setCharIndex,
       setCurrentQuestionIndex,
-      setIsGameCompleted,
+      setFinish,
       setCurrentQuestion,
     ]
   );

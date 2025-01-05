@@ -10,14 +10,12 @@ export default function TypingGamePage() {
     <PrepareGame />
   ) : (
     <div>
-      <div className='flex items-center justify-center h-screen'>
-        <Button
-          className='size-20 w-48 text-3xl font-black'
-          onClick={() => setIsGameStarted(true)}
-        >
-          Play
-        </Button>
-      </div>
+      <Button
+        className='size-20 w-48 text-3xl font-black'
+        onClick={() => setIsGameStarted(true)}
+      >
+        Play
+      </Button>
     </div>
   );
 }

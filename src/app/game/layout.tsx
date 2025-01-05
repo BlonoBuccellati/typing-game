@@ -5,7 +5,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Provider>
-        <div className='bg-slate-300'>{children}</div>
+        <div className='bg-slate-300 flex items-center justify-center h-screen'>
+          {children}
+        </div>
       </Provider>
     </>
   );
